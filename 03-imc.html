@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        #imagen {
+            margin-top: 100px;
+            text-align: center;
+        }
+        #canvas {
+            background-color: #000;
+            height: 300px;
+            width: 400px;
+        }
+    </style>
+<script>
+/*
+El IMC es el acrónimo de Índice de Masa Corporal, una medida de salud que establece unos ratios dada la relación del peso y la altura de una persona.
+
+La fórmula es la siguiente IMC = peso (kg) dividido entre la altura al cuadrado en metros. En función del valor obtenido, se dice:
+
+Si el IMC es menor de 16, el valor asociado es DESNUTRIDO
+si el IMC es mayor o igual que 16 y menor que 18, DELGADO
+si el IMC es mayor o igual que 18 y menos que 25, IDEAL
+si el IMC es mayor o igual que 25 y menor que 31, SOBREPESO
+si es mayor que 31, OBESO
+
+Se pide, hacer una página que permita al usuario introducir su peso y estatura y obtener como respuesta el valor nominal del IMC en que se encuentra.
+
+Una vez conseguido esto, descargar imágenes que describan cada valor del IMC y se muestren también como resultado en la página. 
+Por ejemplo, si alguien le sale el valor de obeso, podría mostrarse la imagen de Homer Simpson.
+
+Mejora: Incluir un enlace a la página de la wikipedia del IMC.
+
+AYUDA TÉCNICA:
+Estaremos trabajando con números reales (con decimal). Para convertir un string en un número real, echad un vistazo a la función parseFloat.
+
+El elemento img, tiene un atributo src, que es una cadena con el nombre/ruta del fichero. Si no pones nada en él, aparecerá la imagen vacía
+
+*/
+
+/*
+http://www.etnassoft.com/2016/11/03/manipulacion-de-imagenes-con-javascript-parte-1/
+
+*/
+
+const SECUENCIA_DNI = 'TRWAGMYFPDXBNJZSQVHLCKE'
+/*
+1. Obtener peso
+2. Obtener altura
+3. Calcular IMC
+4. Mostrar resultado
+
+function calcularImc() {
+    1. Obtener peso
+    2. Obtener altura
+    3. Cálculos
+}
+function mostrarResultado() {
+    4.1 
+    4.2 Mostrar resultados en el html
+}
+
+*/
+function calcularImc () {
+    
+    // 1. Obtener peso y altura
+    var peso = document.getElementById("peso").value;
+    console.log(peso);
+    var altura = document.getElementById("altura").value;
+    console.log(altura);
+    // alert(document.getElementsByTagName("option")[indice].value);
+ 
+    // 2. Calcular el IMC
+    var alturaAlCuadrado = parseFloat(altura * altura);
+    console.log(alturaAlCuadrado);
+    var imc = parseFloat(peso) / alturaAlCuadrado
+    console.log(imc*10000);
+    
+    // 3. Mostrar el resultado. Hay que multiplicar por 100 al cuadrado para pasarlo a metros
+    mostrarResultado(imc*10000);
+
+} // fin-calcularImc
+
+function mostrarResultado (indice) {
+
+    // Texto del mensaje e imagen correspondientes
+    switch (true) {
+    case indice < 16.00:
+        var msg = "preocupante, estás DESNUTRIDO, hay que pedir ayuda ya!!!";
+        var image = '/Users/dev1/Desktop/20191107-Jueves/img/desnutrido.jpeg'
+        break;
+    case indice < 18.00:
+        var msg = "DELGADO, estás sano";
+        var image = '/Users/dev1/Desktop/20191107-Jueves/img/delgado.jpeg'
+        break;
+    case indice < 25.00:
+        var msg = "IDEAL, enhorabuena";
+        var image = '/Users/dev1/Desktop/20191107-Jueves/img/pesoIdeal.png'
+        break;
+    case indice < 31.00:
+        var msg = "de SOBREPESO, te sobra por algún sitio";
+        var image = '/Users/dev1/Desktop/20191107-Jueves/img/sobrepeso.jpeg'
+        break;
+    case indice > 31.00:
+        var msg = "OBESO, te recomendamos ir la médico";
+        var image = '/Users/dev1/Desktop/20191107-Jueves/img/homerGordo.jpeg'
+        break;
+    }
+    console.log(msg);
+    document.getElementById("mensaje").innerHTML = "Tu estado es " + msg;
+
+    // Referencia al canvas
+    var canvas = document.getElementById( 'canvas' ),
+        context = canvas.getContext( '2d' );
+    // Limpiamos el canvas en tiempo de ejecución
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Crea objeto imagen y se carga con el método onload
+    var imageObj = new Image();
+    imageObj.src = image;
+ 
+    imageObj.onload = function () {
+        context.drawImage( imageObj, 0, 0 );
+    }
+} // fin-mostrarResultado
+
+</script>
+</head>
+<body>
+    <br>
+    <input id="peso" type="text" placeholder="Peso en kg">
+    <br>
+    <input id="altura" type="text" placeholder="Altura en centímetros">
+    <br>
+    <button type="button" onclick="calcularImc();">Calcula IMC</button>
+    <br>
+    <h2 id="mensaje"></h2>
+    <div id="imagen">
+        <canvas id="canvas" width="400" height="300"></canvas>
+    </div>
+</body>
+<footer>
+</footer>
+</html>
